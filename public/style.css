@@ -1,0 +1,121 @@
+/* 1. Use a more-intuitive box-sizing model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+html {
+  height: 100%;
+}
+body {
+  /* 3. Add accessible line-height */
+  line-height: 1.5;
+  /* 4. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 5. Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 6. Inherit fonts for form controls */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 7. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* 8. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+/*
+    9. Create a root stacking context
+  */
+#root,
+#__next {
+  isolation: isolate;
+}
+
+.topNav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.login form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 60%;
+}
+.login input {
+  padding: 0rem 0.5rem;
+}
+.login label {
+  visibility: hidden;
+  position: absolute;
+}
+.login button {
+  grid-column-start: span 2;
+}
+.content {
+  height: 100%;
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 2.5rem;
+}
+.leftNav {
+  background-color: lightgray;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  height: 2.5rem;
+  width: 100%;
+  background-color: grey;
+  padding: 0.5rem;
+}
+main {
+  padding: 1rem;
+}

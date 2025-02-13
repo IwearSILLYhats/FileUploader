@@ -15,15 +15,6 @@ const app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.use(passport.session());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "/public")));
-
-app.use((req, res, next) => {
-  res.locals.currentUser = req.user;
-  next();
-});
-
 app.use(
   session({
     cookie: {
@@ -39,6 +30,15 @@ app.use(
     }),
   }),
 );
+
+app.use(passport.session());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "/public")));
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
 
 passport.use(
   new LocalStrategy(async (email, password, done) => {
@@ -85,3 +85,11 @@ app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send(err);
 });
+
+app.get("/", (req, res) => {
+  res.render("index");
+});
+
+app.listen(process.env.port, () =>
+  console.log(`app listening on port ${process.env.port}`),
+);
