@@ -102,6 +102,9 @@ h6 {
   flex-direction: row;
   padding-bottom: 2.5rem;
 }
+.error {
+  color: red;
+}
 .leftNav {
   background-color: lightgray;
   display: flex;
@@ -111,11 +114,51 @@ h6 {
 footer {
   position: absolute;
   bottom: 0;
-  height: 2.5rem;
+  height: 1rem;
   width: 100%;
   background-color: grey;
-  padding: 0.5rem;
+  font-size: 50%;
+  line-height: 1rem;
+  text-align: center;
 }
 main {
   padding: 1rem;
+}
+.userAuth {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: min-content;
+  gap: 0.25rem;
+}
+.userAuth > * {
+  background-color: white;
+  width: 4rem;
+  height: 2rem;
+  line-height: 1rem;
+  border: 1px solid black;
+  padding: 0.5rem;
+  text-align: center;
+  justify-content: center;
+}
+.userAuth > *:hover {
+  filter: brightness(75%);
+}
+
+.signup,
+.login {
+  width: fit-content;
+  margin: auto;
+  padding: 1rem;
+  border: 2px solid lightgray;
+  border-radius: 5px;
+}
+.signup form {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 1rem;
+}
+.signup button,
+.login button {
+  grid-column: span 2;
+  justify-self: center;
 }

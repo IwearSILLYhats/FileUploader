@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>ShareWith - File Sharing Made Easy!</title>
+  </head>
+  <body>
+    <div class="signup">
+      <form action="/signup" method="post">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" placeholder="email" />
+        <label for="username">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="username"
+        />
+        <label for="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="*********"
+        />
+        <label for="confirm">Confirm Password</label>
+        <input
+          type="password"
+          name="confirm"
+          id="confirm"
+          placeholder="*********"
+        />
+        <button type="submit">Submit</button>
+      </form>
+      <div>
+        <p>Already have an account? <a href="/login">Login here</a></p>
+      </div>
+    </div>
+  </body>
+</html>

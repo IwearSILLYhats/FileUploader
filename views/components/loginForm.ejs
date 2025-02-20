@@ -1,14 +1,9 @@
-<div class="login">
-  <form action="" method="post">
-    <label for="email">Email: </label>
-    <input type="email" name="email" id="email" placeholder="email" />
-    <label for="password">Password: </label>
-    <input
-      type="password"
-      name="password"
-      id="password"
-      placeholder="password"
-    />
-    <button type="submit">Login</button>
-  </form>
+<div class="userAuth">
+  <% if(locals.currentUser){ %>
+    <h5> <%= currentUser.username %> </h5>
+    <a href="/logout">Logout</a>
+  <% } else { %>
+    <a href="/login">Log In</a>
+    <a href="/signup">Sign Up</a>
+  <% } %>
 </div>
