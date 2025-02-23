@@ -1,6 +1,32 @@
 <nav class="leftNav">
   <a href="/">Home</a>
   <a href="/shared">My Shared Files</a>
-  <a href="/newFile">New File</a>
-  <a href="/newFolder">New Folder</a>
+  <button class="newFile">New File</button>
+  <button class="newFolder">New Folder</button>
 </nav>
+<%- include("fileForm") %> <%- include("folderForm") %>
+
+<script>
+  const newFile = document.querySelector(".newFile");
+  const newFolder = document.querySelector(".newFolder");
+  const hiddenForm = document.querySelectorAll(".hiddenForm");
+
+  function formVisibility(form) {
+    console.log("test");
+    form.classList.toggle("fullScreen");
+  }
+  newFile.addEventListener("click", function () {
+    formVisibility(hiddenForm[0]);
+  });
+  newFolder.addEventListener("click", function () {
+    formVisibility(hiddenForm[1]);
+  });
+  hiddenForm.forEach((form) => {
+    form.addEventListener("click", (e) => {
+      if (!e.target.closest("form")) {
+        form.querySelector("form").reset();
+        formVisibility(form);
+      }
+    });
+  });
+</script>

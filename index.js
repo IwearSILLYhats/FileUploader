@@ -37,7 +37,6 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
-  console.log(req.user);
   next();
 });
 
@@ -92,9 +91,22 @@ app.use((err, req, res, next) => {
   res.status(500).send(err);
 });
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
+// folder GET
+app.get("/folder/:id", async (req, res) => {});
+// folder POST
+app.post("/folder/create", async (req, res) => {});
+// folder UPDATE
+app.post("/folder/:id/update", async (req, res) => {});
+// folder DELETE
+app.post("/folder/:id/delete", async (req, res) => {});
+// file GET
+app.get("/file/:id", async (req, res) => {});
+// file POST
+app.post("/file/create", async (req, res) => {});
+// file UPDATE
+app.post("/file/:id/update", async (req, res) => {});
+// file DELETE
+app.post("/file/:id/delete", async (req, res) => {});
 
 app.get("/login", (req, res) => {
   res.render("loginPage", { error: req.session.messages });
@@ -156,6 +168,26 @@ app.post("/signup", async (req, res) => {
   } catch (error) {
     throw error;
   }
+});
+
+app.get("/", async (req, res) => {
+  let folders = null;
+  let files = null;
+  if (req.user) {
+    folders = await prisma.folder.findMany({
+      where: {
+        authorId: req.user.id,
+        parentId: null,
+      },
+    });
+    files = await prisma.file.findMany({
+      where: {
+        authorId: req.user.id,
+        folderId: null,
+      },
+    });
+  }
+  res.render("index", { folders: folders, files: files });
 });
 
 app.listen(process.env.port, () =>
