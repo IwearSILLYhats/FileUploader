@@ -84,6 +84,30 @@ h6 {
   position: fixed;
   inset: 0;
 }
+.folders,
+.files {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+.folderCard {
+  background-color: rgb(107, 106, 106);
+  border-radius: 5px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+.folderOptions {
+  display: none;
+  text-decoration: none;
+}
+.folderOptionsBtn,
+.folderCard img {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+}
 .fullScreen {
   display: flex;
   justify-content: center;

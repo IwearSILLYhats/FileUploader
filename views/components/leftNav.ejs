@@ -7,6 +7,7 @@
 <%- include("fileForm") %> <%- include("folderForm") %>
 
 <script>
+  //reference both nav buttons and both creation forms (forms start hidden)
   const newFile = document.querySelector(".newFile");
   const newFolder = document.querySelector(".newFolder");
   const hiddenForm = document.querySelectorAll(".hiddenForm");
@@ -21,10 +22,12 @@
   newFolder.addEventListener("click", function () {
     formVisibility(hiddenForm[1]);
   });
+
+  // resets and hides elements when clicking outside of form if visible
   hiddenForm.forEach((form) => {
     form.addEventListener("click", (e) => {
       if (!e.target.closest("form")) {
-        form.querySelector("form").reset();
+        form.querySelector("form")?.reset();
         formVisibility(form);
       }
     });

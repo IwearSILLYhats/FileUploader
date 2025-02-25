@@ -1,9 +1,13 @@
 <div class="hiddenForm">
-  <form action="/file/create" method="post">
-    <label for="name">Name</label>
-    <input type="text" name="name" id="" value="Untitled File" />
-    <input type="file" name="upload" id="" />
-    <button type="reset">Cancel</button>
-    <button type="submit">Create</button>
-  </form>
+  <% if(locals.currentUser) { %>
+    <form action="/file/create" method="post">
+      <label for="name">Name</label>
+      <input type="text" name="name" id="" value="Untitled File" />
+      <input type="file" name="upload" id="" />
+      <button type="reset">Cancel</button>
+      <button type="submit">Create</button>
+    </form>
+  <% } else { %>
+    <p>You must be logged in to create a file.</p>
+  <% } %>
 </div>

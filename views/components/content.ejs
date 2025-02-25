@@ -1,7 +1,19 @@
 <main>
     <% if(locals.currentUser){ %>
-        <div class="folders"></div>
-        <div class="files"></div>
+        <% if(locals.folders && locals.folders.length > 0) { %>
+        <div class="folders">
+            <% folders.forEach((folder) => { %>
+                <%- include("folderCard", {folder: folder}) %>
+            <% }) %>
+        </div>
+        <% } %>
+        <% if(locals.files && locals.files.length > 0) { %>
+        <div class="files">
+            <% files.forEach((file) => { %>
+                <%- include("fileCard", {file: file}) %>
+            <% }) %>
+        </div>
+        <% } %>
     <% } else { %>
         <h1>Please login to view files</h1>
     <% } %>

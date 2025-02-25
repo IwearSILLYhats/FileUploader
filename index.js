@@ -92,9 +92,46 @@ app.use((err, req, res, next) => {
 });
 
 // folder GET
-app.get("/folder/:id", async (req, res) => {});
+app.get("/folder/:id", async (req, res) => {
+  const currentFolder = await prisma.folder.findUnique({
+    where: {
+      id: parseInt(req.params.id),
+    },
+  });
+  const folders = await prisma.folder.findMany({
+    where: {
+      authorId: req.user.id,
+      parentId: currentFolder.id,
+    },
+  });
+  const files = await prisma.file.findMany({
+    where: {
+      authorId: req.user.id,
+      folderId: currentFolder.id,
+    },
+  });
+  res.render("index", {
+    currentFolder: currentFolder,
+    folders: folders,
+    files: files,
+  });
+});
 // folder POST
-app.post("/folder/create", async (req, res) => {});
+app.post("/folder/create", async (req, res) => {
+  try {
+    const newFolder = {
+      name: req.body.name,
+      authorId: req.user.id,
+      parentId: req.body.current || null,
+    };
+    await prisma.folder.create({
+      data: newFolder,
+    });
+    res.redirect("/");
+  } catch (error) {
+    throw error;
+  }
+});
 // folder UPDATE
 app.post("/folder/:id/update", async (req, res) => {});
 // folder DELETE
@@ -187,7 +224,7 @@ app.get("/", async (req, res) => {
       },
     });
   }
-  res.render("index", { folders: folders, files: files });
+  res.render("index", { currentFolder: null, folders: folders, files: files });
 });
 
 app.listen(process.env.port, () =>
