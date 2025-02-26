@@ -132,8 +132,50 @@ app.post("/folder/create", async (req, res) => {
     throw error;
   }
 });
+
 // folder UPDATE
-app.post("/folder/:id/update", async (req, res) => {});
+app.post("/folder/:id/rename", async (req, res) => {
+  try {
+    await prisma.folder.update({
+      where: {
+        id: parseInt(req.params.id),
+      },
+      data: {
+        name: req.body.name,
+      },
+    });
+    res.redirect(`/folder/${req.params.id}`);
+  } catch (error) {
+    throw error;
+  }
+});
+app.post("/folder/:id/move", async (req, res) => {});
+app.post("/folder/:id/share", async (req, res) => {
+  try {
+    Promise.all([
+      await prisma.folder.update({
+        where: {
+          id: parseInt(req.params.id),
+        },
+        data: {
+          shared: true,
+        },
+      }),
+      await prisma.file.updateMany({
+        where: {
+          folderId: parseInt(req.params.id),
+        },
+        data: {
+          shared: true,
+        },
+      }),
+    ]);
+
+    res.redirect(`/folder/${req.params.id}`);
+  } catch (error) {
+    throw error;
+  }
+});
 // folder DELETE
 app.post("/folder/:id/delete", async (req, res) => {});
 // file GET

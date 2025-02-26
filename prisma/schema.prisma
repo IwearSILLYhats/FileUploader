@@ -20,7 +20,8 @@ model File {
   folderId Int?
   filename String
   Folder   Folder?  @relation(fields: [folderId], references: [id])
-  shared   Boolean
+  shared   Boolean  @default(false)
+  size     String
   uploaded DateTime @default(now())
 }
 
@@ -33,6 +34,7 @@ model Folder {
   name         String
   parentId     Int?
   parentFolder Folder?  @relation("ParentChildren", fields: [parentId], references: [id])
+  shared       Boolean  @default(false)
 }
 
 model User {
