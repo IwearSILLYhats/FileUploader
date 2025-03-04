@@ -93,23 +93,26 @@ app.use((err, req, res, next) => {
 
 // folder GET
 app.get("/folder/:id", async (req, res) => {
-  const currentFolder = await prisma.folder.findUnique({
-    where: {
-      id: parseInt(req.params.id),
-    },
-  });
-  const folders = await prisma.folder.findMany({
-    where: {
-      authorId: req.user.id,
-      parentId: currentFolder.id,
-    },
-  });
-  const files = await prisma.file.findMany({
-    where: {
-      authorId: req.user.id,
-      folderId: currentFolder.id,
-    },
-  });
+  const [folders, files] = await Promise.all([
+    prisma.folder.findMany({
+      where: {
+        authorId: req.user.id,
+      },
+    }),
+    prisma.file.findMany({
+      where: {
+        authorId: req.user.id,
+        folderId: parseInt(req.params.id),
+      },
+    }),
+  ]);
+  const currentFolder = folders.find(
+    (folder) => folder.id === parseInt(req.params.id),
+  );
+  if (!currentFolder) {
+    return res.redirect("/");
+  }
+
   res.render("index", {
     currentFolder: currentFolder,
     folders: folders,
@@ -136,6 +139,15 @@ app.post("/folder/create", async (req, res) => {
 // folder UPDATE
 app.post("/folder/:id/rename", async (req, res) => {
   try {
+    const folder = await prisma.folder.findUnique({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
+    if (folder.authorId !== req.user.id) {
+      return res.redirect(`/folder/${req.params.id}`);
+    }
+
     await prisma.folder.update({
       where: {
         id: parseInt(req.params.id),

@@ -97,10 +97,19 @@ h6 {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
+  position: relative;
 }
 .folderOptions {
+  position: absolute;
   display: none;
   text-decoration: none;
+}
+.show + .folderOptions {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  display: block;
 }
 .folderOptionsBtn,
 .folderCard img {
@@ -119,6 +128,9 @@ h6 {
   padding: 1rem;
   display: flex;
   flex-direction: column;
+}
+input:checked {
+  display: block;
 }
 .login form {
   display: flex;

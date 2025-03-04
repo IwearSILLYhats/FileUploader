@@ -2,12 +2,9 @@
   <img src="images/folder.svg" alt="" />
   <h5><%= folder.name %></h5>
   <p>Shared Icon</p>
-  <button class="folderOptionsBtn">
-    <img src="images/3dots.svg" alt="" />
-  </button>
-  <ul class="folderOptions">
-    <li>Open</li>
-    <li>Rename</li>
+  <ul class="options">
+    <a href="/folder/<%= folder.id%>"><li>Open</li></a>
+    <li onclick="">Rename</li>
     <li>Move</li>
     <li>Share</li>
     <li>Delete</li>
