@@ -1,0 +1,83 @@
+<div class="modalWrapper">
+    <form action="" method="post" class="modalForm">
+        <h3 class="modalTitle">Move to:</h3>
+        <select name="folderList" class="modalSelect">
+            <option value="">Home</option>
+            <% folders.forEach((folder) => { %>
+                <option value="<%= folder.id %>"><%= folder.name %></option>
+            <% }) %>
+        </select>
+        <input type="text" name="name" id="" class="modalName">
+        <button class="modalCancel">Cancel</button>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+    const modal = document.querySelector('.modalWrapper');
+    const modalForm = document.querySelector('.modalForm');
+    const title = document.querySelector(".modalTitle");
+    const select = document.querySelector(".modalSelect");
+    const input = document.querySelector(".modalName");
+
+  function deleteData(type, id, name) {
+    modal.classList.toggle("fullScreen");
+    title.textContent = `Delete ${name}?`;
+    select.style.display = "none";
+    input.style.display = "none";
+    modalForm.action = `/${type}/${id}/delete`;
+  }
+  function moveData(type, id, name) {
+    modal.classList.toggle("fullScreen");
+    title.textContent = `Move ${name} to:`;
+    select.style.display = "block";
+    input.style.display = "none";
+    modalForm.action = `/${type}/${id}/move`;
+  }
+  function renameData(type, id, name) {
+    modal.classList.toggle("fullScreen");
+    title.textContent = `Rename ${name}?`;
+    select.style.display = "none";
+    input.style.display = "block";
+    input.value = data.name;
+    modalForm.action = `/${type}/${id}/rename`;
+  }
+  function shareData(type, id, name) {
+    modal.classList.toggle("fullScreen");
+    title.textContent = `Share ${name}?`;
+    select.style.display = "none";
+    input.style.display = "none";
+    modalForm.action = `/${type}/${id}/share`;
+  }
+
+  modal.addEventListener("click", (e) => {
+        if (!e.target.closest('.modalForm') || e.target.closest('button')) {
+            modal.classList.toggle("fullScreen");
+        }
+    });
+
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".contentCard");
+    cards.forEach((card) => {
+      card.addEventListener("click", (e) => {
+        const type = card.dataset.type;
+        const id = card.dataset.id;
+        const name = card.querySelector(".cardName").textContent;
+        const optionsBtn = card.querySelector(".optionsBtn");
+        const options = card.querySelector(".contentOptions");
+        if (e.target.classList.contains("deleteBtn")) {
+          deleteData(type, id, name);
+        } else if (e.target.classList.contains("moveBtn")) {
+          moveData(type, id, name);
+        } else if (e.target.classList.contains("renameBtn")) {
+          renameData(type, id, name);
+        } else if (e.target.classList.contains("shareBtn")) {
+          shareData(type, id, name);
+        } else if (e.target.closest("button").classList.contains("optionsBtn")) {
+          options.classList.toggle("show");
+        }
+      });
+    });
+  })
+</script>

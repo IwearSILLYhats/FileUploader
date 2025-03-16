@@ -3,18 +3,19 @@
         <% if(locals.folders && locals.folders.length > 0) { %>
         <div class="folders">
             <% folders.forEach((folder) => { %>
-                <%- include("folderCard", {folder: folder}) %>
+                <%- include("contentCard", {data: {...folder, type: "folder" }}) %>
             <% }) %>
         </div>
         <% } %>
         <% if(locals.files && locals.files.length > 0) { %>
         <div class="files">
             <% files.forEach((file) => { %>
-                <%- include("fileCard", {file: file}) %>
+                <%- include("contentCard", {data: {...file, type: "file" }}) %>
             <% }) %>
         </div>
         <% } %>
     <% } else { %>
         <h1>Please login to view files</h1>
     <% } %>
+    <%- include("modalForm") %>
 </main>
