@@ -3,7 +3,9 @@
         <% if(locals.folders && locals.folders.length > 0) { %>
         <div class="folders">
             <% folders.forEach((folder) => { %>
+                <% if(currentFolder === null || folder.parentId === currentFolder.id) { %>
                 <%- include("contentCard", {data: {...folder, type: "folder" }}) %>
+                <% } %>
             <% }) %>
         </div>
         <% } %>

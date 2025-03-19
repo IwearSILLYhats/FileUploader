@@ -125,7 +125,7 @@ app.post("/folder/create", async (req, res) => {
     const newFolder = {
       name: req.body.name,
       authorId: req.user.id,
-      parentId: req.body.current || null,
+      parentId: parseInt(req.body.currentFolder) || null,
     };
     await prisma.folder.create({
       data: newFolder,
@@ -161,7 +161,32 @@ app.post("/folder/:id/rename", async (req, res) => {
     throw error;
   }
 });
-app.post("/folder/:id/move", async (req, res) => {});
+app.post("/folder/:id/move", async (req, res) => {
+  try {
+    const folder = await prisma.folder.findUnique({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
+    if (folder.authorId !== req.user.id) {
+      return res.redirect(`/folder/${req.params.id}`);
+    }
+    if (folder.id === parseInt(req.body.folderList)) {
+      return res.redirect(`/folder/${req.params.id}`);
+    }
+    await prisma.folder.update({
+      where: {
+        id: parseInt(req.params.id),
+      },
+      data: {
+        parentId: parseInt(req.body.folderList),
+      },
+    });
+    res.redirect(`/folder/${req.body.folderList}`);
+  } catch (error) {
+    throw error;
+  }
+});
 app.post("/folder/:id/share", async (req, res) => {
   try {
     Promise.all([

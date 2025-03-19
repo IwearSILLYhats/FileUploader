@@ -1,15 +1,17 @@
-<div class="contentCard" data-id="<%= data.id %> data-type="<%= data.type %>">
+<div class="contentCard" data-id="<%= data.id %>" data-type="<%= data.type %>">
   <div>
-    <img src="images/folder.svg" alt="" />
+    <img src="/images/folder.svg" alt="" />
     <h5 class="cardName"><%= data.name %></h5>
     <p>Shared Icon</p>
     <button class="optionsBtn">
-      <img src="images/3dots.svg" alt=""/>
+      <img src="/images/3dots.svg" alt="" />
     </button>
   </div>
   <ul class="contentOptions">
     <li>
-      <button class="openBtn">Open</button>
+      <a href="/<%= data.type %>/<%= data.id %>">
+        <button class="openBtn">Open</button>
+      </a>
     </li>
     <li>
       <button class="renameBtn">Rename</button>

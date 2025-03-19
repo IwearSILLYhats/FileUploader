@@ -8,7 +8,7 @@
             <% }) %>
         </select>
         <input type="text" name="name" id="" class="modalName">
-        <button class="modalCancel">Cancel</button>
+        <button class="modalCancel" type="reset">Cancel</button>
         <button type="submit">Submit</button>
     </form>
 </div>
@@ -76,6 +76,9 @@
           shareData(type, id, name);
         } else if (e.target.closest("button").classList.contains("optionsBtn")) {
           options.classList.toggle("show");
+        } else if (e.target.closest("button").classList.contains("modalCancel")) {
+          e.preventDefault();
+          modal.classList.toggle("fullScreen");
         }
       });
     });
