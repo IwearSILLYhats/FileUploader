@@ -156,7 +156,10 @@ app.post("/folder/:id/rename", async (req, res) => {
         name: req.body.name,
       },
     });
-    res.redirect(`/folder/${req.params.id}`);
+    if (folder.parentId === null) {
+      return res.redirect(`/`);
+    }
+    res.redirect(`/folder/${folder.parentId}`);
   } catch (error) {
     throw error;
   }
@@ -189,13 +192,24 @@ app.post("/folder/:id/move", async (req, res) => {
 });
 app.post("/folder/:id/share", async (req, res) => {
   try {
+    const folder = await prisma.folder.findUnique({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
+    if (folder.authorId !== req.user.id) {
+      if (folder.parentId === null) {
+        return res.redirect(`/`);
+      }
+      return res.redirect(`/folder/${folder.parentId}`);
+    }
     Promise.all([
       await prisma.folder.update({
         where: {
           id: parseInt(req.params.id),
         },
         data: {
-          shared: true,
+          shared: !folder.shared,
         },
       }),
       await prisma.file.updateMany({
@@ -203,18 +217,40 @@ app.post("/folder/:id/share", async (req, res) => {
           folderId: parseInt(req.params.id),
         },
         data: {
-          shared: true,
+          shared: !folder.shared,
         },
       }),
     ]);
-
-    res.redirect(`/folder/${req.params.id}`);
+    if (folder.parentId === null) {
+      return res.redirect(`/`);
+    }
+    res.redirect(`/folder/${folder.parentId}`);
   } catch (error) {
     throw error;
   }
 });
 // folder DELETE
-app.post("/folder/:id/delete", async (req, res) => {});
+app.post("/folder/:id/delete", async (req, res) => {
+  try {
+    const folder = await prisma.folder.findUnique({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
+    if (folder.authorId !== req.user.id) {
+      return res.redirect(`/folder/${folder.parentId}`);
+    }
+    await prisma.folder.delete({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
+    res.redirect(`/folder/${folder.parentId}`);
+  } catch (error) {
+    throw error;
+  }
+});
+
 // file GET
 app.get("/file/:id", async (req, res) => {});
 // file POST

@@ -3,9 +3,10 @@
         <h3 class="modalTitle">Move to:</h3>
         <select name="folderList" class="modalSelect">
             <option value="">Home</option>
+            <% if(locals.folders && locals.folders.length > 0) { %>
             <% folders.forEach((folder) => { %>
                 <option value="<%= folder.id %>"><%= folder.name %></option>
-            <% }) %>
+            <% })} %>
         </select>
         <input type="text" name="name" id="" class="modalName">
         <button class="modalCancel" type="reset">Cancel</button>
@@ -39,7 +40,7 @@
     title.textContent = `Rename ${name}?`;
     select.style.display = "none";
     input.style.display = "block";
-    input.value = data.name;
+    input.value = name;
     modalForm.action = `/${type}/${id}/rename`;
   }
   function shareData(type, id, name) {
