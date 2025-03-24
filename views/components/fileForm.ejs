@@ -1,9 +1,9 @@
 <div class="hiddenForm">
   <% if(locals.currentUser) { %>
     <form action="/file/create" method="post">
-      <label for="name">Name</label>
-      <input type="text" name="name" id="" value="Untitled File" />
-      <input type="file" name="upload" id="" />
+      <label for="fileName">Name</label>
+      <input type="text" name="name" id="fileName" value="Untitled File" />
+      <input type="file" name="upload" id="fileUpload" />
       <button type="reset">Cancel</button>
       <button type="submit">Submit</button>
     </form>

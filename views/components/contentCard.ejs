@@ -1,5 +1,5 @@
 <div class="contentCard" data-id="<%= data.id %>" data-type="<%= data.type %>">
-  <div>
+  <div class="contentCardHeader">
     <img src="/images/folder.svg" alt="" />
     <h5 class="cardName"><%= data.name %></h5>
     <img src="/images/<%= data.shared ? "starFilled.svg" : "star.svg" %>" alt="">
@@ -7,17 +7,22 @@
       <img src="/images/3dots.svg" alt="" />
     </button>
   </div>
-  <ul class="contentOptions">
-    <li>
-      <a href="/<%= data.type %>/<%= data.id %>">
-        <button class="openBtn">Open</button>
-      </a>
-    </li>
-    <li>
-      <button class="renameBtn">Rename</button>
-    </li>
-    <li><button class="moveBtn">Move</button></li>
-    <li><button class="shareBtn">Share</button></li>
-    <li><button class="deleteBtn">Delete</button></li>
-  </ul>
+  <div class="contentOptions">
+    <% if(data.type === "file") { %>
+      <%- include("components/fileInfo.ejs", {data: data}) %>
+    <% } %>
+    <ul>
+      <li>
+        <a href="/<%= data.type %>/<%= data.id %>">
+          <button class="openBtn">Open</button>
+        </a>
+      </li>
+      <li>
+        <button class="renameBtn">Rename</button>
+      </li>
+      <li><button class="moveBtn">Move</button></li>
+      <li><button class="shareBtn">Share</button></li>
+      <li><button class="deleteBtn">Delete</button></li>
+    </ul>
+  </div>
 </div>

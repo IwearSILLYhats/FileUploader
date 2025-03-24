@@ -130,7 +130,10 @@ app.post("/folder/create", async (req, res) => {
     await prisma.folder.create({
       data: newFolder,
     });
-    res.redirect("/");
+    if (newFolder.parentId === null) {
+      return res.redirect("/");
+    }
+    res.redirect(`/folder/${newFolder.parentId}`);
   } catch (error) {
     throw error;
   }
@@ -238,6 +241,9 @@ app.post("/folder/:id/delete", async (req, res) => {
       },
     });
     if (folder.authorId !== req.user.id) {
+      if (folder.parentId === null) {
+        return res.redirect(`/`);
+      }
       return res.redirect(`/folder/${folder.parentId}`);
     }
     await prisma.folder.delete({
@@ -245,6 +251,9 @@ app.post("/folder/:id/delete", async (req, res) => {
         id: parseInt(req.params.id),
       },
     });
+    if (folder.parentId === null) {
+      return res.redirect(`/`);
+    }
     res.redirect(`/folder/${folder.parentId}`);
   } catch (error) {
     throw error;

@@ -91,34 +91,34 @@ h6 {
   flex-direction: row;
   gap: 0.5rem;
 }
-.contentCard {
-  position: relative;
-}
-.contentCard div {
+.contentCardHeader {
   background-color: rgb(107, 106, 106);
-  border-radius: 5px;
   padding: 1rem;
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
 }
 .contentOptions {
-  text-decoration: none;
   display: none;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  bottom: 0;
-  left: 0;
   background-color: rgb(107, 106, 106);
   border-radius: 5px;
-  padding: 1rem;
-  gap: 0.5rem;
 }
 .contentOptions.show {
   display: flex;
   flex-direction: column;
   height: fit-content;
+}
+ul,
+li,
+li button {
+  text-decoration: none;
+  list-style-type: none;
+  width: 100%;
+  border: none;
+  padding: 0;
+}
+.contentOptions button:hover {
+  background-color: lightgray;
 }
 .contentCard img {
   width: 1.5rem;

@@ -2,8 +2,8 @@
   <% if(locals.currentUser) { %>
     <form action="/folder/create" method="post">
       <input type="hidden" name="currentFolder" value="<%= currentFolder?.id %>" />
-      <label for="name">Name</label>
-      <input type="text" name="name" id="" value="Untitled Folder" />
+      <label for="folderName">Name</label>
+      <input type="text" name="name" id="folderName" value="Untitled Folder" />
       <button type="reset">Cancel</button>
       <button type="submit">Submit</button>
     </form>
