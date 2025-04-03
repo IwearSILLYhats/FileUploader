@@ -8,13 +8,17 @@
                 <% } %>
             <% }) %>
         </div>
-        <% } %>
+        <% } else { %>
+            <h1>No folders found</h1>
+            <% } %>
         <% if(locals.files && locals.files.length > 0) { %>
         <div class="files">
             <% files.forEach((file) => { %>
                 <%- include("contentCard", {data: {...file, type: "file" }}) %>
             <% }) %>
         </div>
+        <% } else { %>
+            <h1>No files found</h1>
         <% } %>
     <% } else { %>
         <h1>Please login to view files</h1>
