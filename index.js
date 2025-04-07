@@ -6,13 +6,6 @@ const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
-const multer = require("multer");
-const upload = multer({ storage: multer.memoryStorage() });
-const { createClient } = require("@supabase/supabase-js");
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY,
-);
 const { body, validationResult } = require("express-validator");
 require("dotenv").config();
 const folderRouter = require("./routers/folderrouter");

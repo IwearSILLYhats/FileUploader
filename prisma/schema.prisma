@@ -19,7 +19,7 @@ model File {
   author   User     @relation(fields: [authorId], references: [id])
   authorId Int
   folderId Int?
-  filename String
+  name     String
   Folder   Folder?  @relation(fields: [folderId], references: [id])
   shared   Boolean  @default(false)
   size     String

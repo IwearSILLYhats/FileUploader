@@ -1,13 +1,15 @@
 <div class="hiddenForm">
   <% if(locals.currentUser) { %>
-    <form action="/file/create" method="post" enctype="multipart/form-data">
+    <form action="/file/create" method="post" enctype="multipart/form-data" class="fileForm">
       <label for="fileName">Name</label>
       <input type="text" name="name" id="fileName" value="Untitled File" />
       <input type="file" name="upload" id="fileUpload" />
+      <input type="hidden" name="parentId" value="<%= locals.currentFolder?.parentId || "" %>" />
+      <span class="fileSize"></span>
       <button type="reset">Cancel</button>
       <button type="submit">Submit</button>
     </form>
   <% } else { %>
-    <p>You must be logged in to create a file.</p>
+    <p>You must be logged in to upload a file.</p>
   <% } %>
 </div>
