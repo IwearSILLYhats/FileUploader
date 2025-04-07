@@ -12,11 +12,32 @@ const supabase = createClient(
 );
 
 // file GET
-router.get("/:id", async (req, res) => {});
-// file POST - WIP
+router.get("/:id", async (req, res) => {
+  const fileData = await prisma.file.findUnique({
+    where: {
+      id: parseInt(req.params.id),
+    },
+  });
+  if (!fileData) {
+    return res.status(404).send("File not found");
+  }
+  const { data, error } = await supabase.storage
+    .from("upload")
+    .createSignedUrl(fileData.url, 60, {
+      download: true,
+    });
+  if (error) {
+    return res.status(500).send("Error generating signed URL");
+  }
+  res.json({
+    name: fileData.name,
+    url: data.signedUrl,
+  });
+  return;
+});
+// file POST
 router.post("/create", upload.single("upload"), async (req, res) => {
   try {
-    console.log(req.file, req.body);
     if (!req.file) {
       return res.status(400).send("No file uploaded");
     }
@@ -43,7 +64,7 @@ router.post("/create", upload.single("upload"), async (req, res) => {
       folderId: req.body.folderId,
       authorId: req.user.id,
       size: fileSize,
-      url: data.fullPath,
+      url: data.path,
     };
     await prisma.file.create({
       data: newFile,
@@ -55,7 +76,29 @@ router.post("/create", upload.single("upload"), async (req, res) => {
 });
 // file UPDATE
 //rename
-router.post("/:id/rename", async (req, res) => {});
+router.post("/:id/rename", async (req, res) => {
+  const fileData = await prisma.file.findUnique({
+    where: {
+      id: parseInt(req.params.id),
+    },
+  });
+  if (!fileData) {
+    return res.status(404).send("File not found");
+  }
+  if (fileData.authorId !== req.user.id) {
+    return res.status(401).send("Unauthorized");
+  }
+  const newName = req.body.name;
+  await prisma.file.update({
+    where: {
+      id: parseInt(req.params.id),
+    },
+    data: {
+      name: newName,
+    },
+  });
+  res.redirect(`/folder/${fileData.folderId}`);
+});
 //move
 router.post("/:id/move", async (req, res) => {});
 //share

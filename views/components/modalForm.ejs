@@ -61,7 +61,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     const cards = document.querySelectorAll(".contentCard");
     cards.forEach((card) => {
-      card.addEventListener("click", (e) => {
+      card.addEventListener("click", async (e) => {
         const type = card.dataset.type;
         const id = card.dataset.id;
         const name = card.querySelector(".cardName").textContent;
@@ -80,6 +80,14 @@
         } else if (e.target.closest("button").classList.contains("modalCancel")) {
           e.preventDefault();
           modal.classList.toggle("fullScreen");
+        } else if (e.target.closest("button").classList.contains("openBtn")) {
+          if (type === "folder") {
+            window.location.href = `/folder/${id}`;
+          } else if (type === "file") {            
+            const fetchUrl = await fetch(`/${type}/${id}`);
+            const data = await fetchUrl.json();
+            window.location.href = `${data.url}`;
+          }
         }
       });
     });
