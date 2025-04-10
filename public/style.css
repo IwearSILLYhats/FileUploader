@@ -90,6 +90,7 @@ h6 {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
+  padding-bottom: 1rem;
 }
 .contentCardHeader {
   background-color: rgb(107, 106, 106);
@@ -99,14 +100,22 @@ h6 {
   gap: 0.5rem;
 }
 .contentOptions {
-  display: none;
-  background-color: rgb(107, 106, 106);
-  border-radius: 5px;
-}
-.contentOptions.show {
   display: flex;
   flex-direction: column;
-  height: fit-content;
+  z-index: 1;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  background-color: rgb(150, 150, 150);
+  transition: max-height 0.5s ease;
+  max-height: 0;
+  overflow: hidden;
+}
+.contentOptions.show {
+  max-height: 400px;
+  pointer-events: auto;
 }
 ul,
 li,
@@ -117,8 +126,14 @@ li button {
   border: none;
   padding: 0;
 }
+.contentOptions button {
+  background-color: rgb(150, 150, 150);
+}
 .contentOptions button:hover {
   background-color: lightgray;
+}
+.contentCard {
+  position: relative;
 }
 .contentCard img {
   width: 1.5rem;

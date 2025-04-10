@@ -3,7 +3,7 @@
         <% if(locals.folders && locals.folders.length > 0) { %>
         <div class="folders">
             <% folders.forEach((folder) => { %>
-                <% if(currentFolder === null || folder.parentId === currentFolder.id) { %>
+                <% if((currentFolder === null && folder.parentId === null) || folder.parentId === currentFolder?.id) { %>
                 <%- include("contentCard", {data: {...folder, type: "folder" }}) %>
                 <% } %>
             <% }) %>
@@ -12,6 +12,7 @@
             <h1>No folders found</h1>
             <% } %>
         <% if(locals.files && locals.files.length > 0) { %>
+            <h2>Files</h2>
         <div class="files">
             <% files.forEach((file) => { %>
                 <%- include("contentCard", {data: {...file, type: "file" }}) %>

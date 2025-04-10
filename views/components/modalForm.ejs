@@ -77,7 +77,7 @@
           shareData(type, id, name);
         } else if (e.target.closest("button").classList.contains("optionsBtn")) {
           options.classList.toggle("show");
-        } else if (e.target.closest("button").classList.contains("modalCancel")) {
+        } else if (e.target.classList.contains("modalCancel")) {
           e.preventDefault();
           modal.classList.toggle("fullScreen");
         } else if (e.target.closest("button").classList.contains("openBtn")) {

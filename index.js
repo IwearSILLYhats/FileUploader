@@ -167,7 +167,6 @@ app.get("/", async (req, res) => {
     folders = await prisma.folder.findMany({
       where: {
         authorId: req.user.id,
-        parentId: null,
       },
     });
     files = await prisma.file.findMany({

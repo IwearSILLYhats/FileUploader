@@ -86,20 +86,35 @@ router.post("/:id/move", async (req, res) => {
         id: parseInt(req.params.id),
       },
     });
-    if (folder.authorId !== req.user.id) {
-      return res.redirect(`/folder/${req.params.id}`);
+    let parentFolder = null;
+    if (req.body.folderList !== "") {
+      parentFolder = await prisma.folder.findUnique({
+        where: {
+          id: parseInt(req.body.folderList),
+        },
+      });
+    }
+    if (
+      folder.authorId !== req.user.id ||
+      (parentFolder !== null && parentFolder.authorId !== req.user.id)
+    ) {
+      return res.status(401).send("Not authorized");
     }
     if (folder.id === parseInt(req.body.folderList)) {
-      return res.redirect(`/folder/${req.params.id}`);
+      return res.status(409).send("Cannot place a folder into itself");
     }
+
     await prisma.folder.update({
       where: {
         id: parseInt(req.params.id),
       },
       data: {
-        parentId: parseInt(req.body.folderList),
+        parentId: parentFolder === null ? null : parseInt(req.body.folderList),
       },
     });
+    if (parentFolder === null) {
+      res.redirect("/");
+    }
     res.redirect(`/folder/${req.body.folderList}`);
   } catch (error) {
     throw error;
@@ -158,6 +173,26 @@ router.post("/:id/delete", async (req, res) => {
       }
       return res.redirect(`/folder/${folder.parentId}`);
     }
+    // if has children, update their parent to the next folder in line (or home/null)
+    await Promise.all([
+      prisma.file.updateMany({
+        where: {
+          folderId: folder.id,
+        },
+        data: {
+          folderId: folder.parentId,
+        },
+      }),
+      prisma.folder.updateMany({
+        where: {
+          parentId: folder.id,
+        },
+        data: {
+          parentId: folder.parentId,
+        },
+      }),
+    ]);
+
     await prisma.folder.delete({
       where: {
         id: parseInt(req.params.id),

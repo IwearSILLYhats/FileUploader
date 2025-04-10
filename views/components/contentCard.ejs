@@ -15,12 +15,14 @@
       <li>
         <button class="openBtn">Open</button>
       </li>
-      <li>
-        <button class="renameBtn">Rename</button>
-      </li>
-      <li><button class="moveBtn">Move</button></li>
-      <li><button class="shareBtn">Share</button></li>
-      <li><button class="deleteBtn">Delete</button></li>
+      <%if (locals.currentUser.id === data.authorId) { %>
+        <li>
+          <button class="renameBtn">Rename</button>
+        </li>
+        <li><button class="moveBtn">Move</button></li>
+        <li><button class="shareBtn">Share</button></li>
+        <li><button class="deleteBtn">Delete</button></li>
+      <% } %>
     </ul>
   </div>
 </div>

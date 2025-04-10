@@ -100,10 +100,81 @@ router.post("/:id/rename", async (req, res) => {
   res.redirect(`/folder/${fileData.folderId}`);
 });
 //move
-router.post("/:id/move", async (req, res) => {});
+router.post("/:id/move", async (req, res) => {
+  try {
+    const file = await prisma.file.findUnique({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
+    let folder = null;
+    if (req.body.folderList !== "") {
+      folder = await prisma.folder.findUnique({
+        where: {
+          id: parseInt(req.body.folderList),
+        },
+      });
+    }
+    if (
+      file.authorId !== req.user.id ||
+      (folder !== null && folder.authorId !== req.user.id)
+    ) {
+      console.error("Not authorized");
+      return res.status(401).send("Not Authorized");
+    }
+    await prisma.file.update({
+      where: {
+        id: parseInt(req.params.id),
+      },
+      data: {
+        folderId: folder === null ? null : parseInt(folder.id),
+      },
+    });
+    if (folder === null) {
+      return res.redirect("/");
+    }
+    res.redirect(`/folder/${folder.id}`);
+  } catch (error) {
+    throw error;
+  }
+});
 //share
-router.post("/:id/share", async (req, res) => {});
+router.post("/:id/share", async (req, res) => {
+  const file = await prisma.file.findUnique({
+    where: {
+      id: parseInt(req.params.id),
+    },
+  });
+  if (req.user.id !== file.authorId) {
+    return res.status(401).send("Not Authorized");
+  }
+  await prisma.file.update({
+    where: {
+      id: parseInt(req.params.id),
+    },
+    data: {
+      shared: !file.shared,
+    },
+  });
+  res.redirect(`/folder/${file.folderId}`);
+});
 // file DELETE
-router.post("/:id/delete", async (req, res) => {});
+router.post("/:id/delete", async (req, res) => {
+  const file = await prisma.file.findUnique({
+    where: {
+      id: parseInt(req.params.id),
+    },
+  });
+  if (file.authorId !== req.user.id) {
+    res.status(401).send("Not Authorized");
+  }
+  const { data, error } = await supabase.storage
+    .from("upload")
+    .remove([file.url]);
+  if (file.folderId === null) {
+    res.redirect("/");
+  }
+  res.redirect(`/folder/${file.folderId}`);
+});
 
 module.exports = router;

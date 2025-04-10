@@ -5,6 +5,6 @@
   </div>
   <div class="fileInfoRow">
     <p>Created:</p>
-    <p><%= data.uploaded %></p>
+    <p><%= new Date(data.uploaded).toISOString().split("T")[0] %></p>
   </div>
 </div>
